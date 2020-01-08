@@ -29,22 +29,26 @@ public class MessagingService {
 
     		FirebaseApp.initializeApp(options);
 	}
-	
+
 	@RequestMapping("/notifyDevice/{param1}")
-    public ResponseEntity sendNotificationToDevice(@PathVariable("param1") String param1) throws FirebaseMessagingException{
-    	
+    public ResponseEntity sendNotificationToDeviceEndPoint(@PathVariable("param1") String param1) throws FirebaseMessagingException{
+
     		// Send message to particular device id
-    		String registrationToken = param1;
-    		
-    		Message message = Message.builder()
-    		    .putData("score", "1000")
-    		    .setToken(registrationToken)
-    		    .build();  		
-				String response = FirebaseMessaging.getInstance().send(message);
+				String response = sendNotificationToDevice(param1);
 				return ResponseEntity.ok("Successfully sent message: " + response);
-       
+
     }
-	
+
+    public String sendNotificationToDevice(String key) throws FirebaseMessagingException {
+		String registrationToken = key;
+
+		Message message = Message.builder()
+				.putData("score", "1000")
+				.setToken(registrationToken)
+				.build();
+		String response = FirebaseMessaging.getInstance().send(message);
+		return  response;
+	}
 	@RequestMapping("/notifyTopic/{param1}")
     public ResponseEntity sendNotificationToTopic(@PathVariable("param1") String param1) throws FirebaseMessagingException{
     	
